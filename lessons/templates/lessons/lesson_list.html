@@ -1,0 +1,47 @@
+{% extends "lessons/base.html" %}
+
+{% block content %}
+  <div class="topbar">
+    <div>
+      <h2 style="margin:0;">📚 Lessons</h2>
+      <div class="muted">English ↔ Spanish practice, one lesson at a time.</div>
+    </div>
+
+    <div style="display:flex; gap:.5rem; align-items:center;">
+      <form method="GET" style="display:flex; gap:.5rem; align-items:center;">
+        <input name="q" value="{{ q }}" placeholder="Search by title..." style="max-width:260px;" />
+        <button class="btn" type="submit">Search</button>
+      </form>
+
+      <a href="{% url 'lesson_create' %}" class="btn">+ New Lesson</a>
+    </div>
+  </div>
+
+  <div style="margin-top: 1.5rem;">
+    {% for lesson in lessons %}
+      <div class="card">
+        <h3 style="margin-top:0;">{{ lesson.title }}</h3>
+
+        <p>
+          <strong>English:</strong><br />
+          {{ lesson.english_text|truncatechars:140 }}
+        </p>
+
+        <p>
+          <strong>Spanish:</strong><br />
+          {{ lesson.spanish_text|truncatechars:140 }}
+        </p>
+
+        <div style="display:flex; gap:.5rem; margin-top: .75rem;">
+          <a class="btn" href="{% url 'lesson_detail' lesson.pk %}">View</a>
+          <a class="btn" href="{% url 'lesson_update' lesson.pk %}">Edit</a>
+          <a class="btn danger" href="{% url 'lesson_delete' lesson.pk %}">Delete</a>
+        </div>
+      </div>
+    {% empty %}
+      <div class="card">
+        <p>No lessons yet. Hit <strong>+ New Lesson</strong> to create your first one.</p>
+      </div>
+    {% endfor %}
+  </div>
+{% endblock %}
